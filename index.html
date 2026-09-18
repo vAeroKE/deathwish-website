@@ -1,15 +1,659 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Deathwish</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeathWish | Discord Raid & Nuke Bot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blood-red: #8B0000;
+            --dark-red: #4a0000;
+            --crimson: #dc143c;
+            --black: #0a0a0a;
+            --dark-gray: #1a1a1a;
+            --gray: #2a2a2a;
+            --white: #ffffff;
+            --glow-red: 0 0 20px rgba(220, 20, 60, 0.6);
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 50%, #0a0a0a 100%);
+            min-height: 100vh;
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--crimson);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 10s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* Glitch effect */
+        .glitch {
+            position: relative;
+            animation: glitch-skew 1s infinite linear alternate-reverse;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+            color: #ff0000;
+            z-index: -1;
+        }
+
+        .glitch::after {
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+            color: #8B0000;
+            z-index: -2;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, -2px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, 2px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(10% 0 70% 0); transform: translate(-2px, 2px); }
+            100% { clip-path: inset(30% 0 50% 0); transform: translate(2px, -2px); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, 2px); }
+            20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, -2px); }
+            40% { clip-path: inset(30% 0 20% 0); transform: translate(2px, -2px); }
+            60% { clip-path: inset(15% 0 80% 0); transform: translate(-2px, 2px); }
+            80% { clip-path: inset(55% 0 10% 0); transform: translate(2px, -2px); }
+            100% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, 2px); }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 2px solid var(--blood-red);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: var(--crimson);
+            box-shadow: var(--glow-red);
+        }
+
+        .bot-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--blood-red);
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.8), inset 0 0 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(139, 0, 0, 0.8); }
+            50% { box-shadow: 0 0 50px rgba(220, 20, 60, 1); }
+        }
+
+        h1 {
+            font-family: 'Creepster', cursive;
+            font-size: 4rem;
+            color: var(--crimson);
+            text-shadow: 0 0 20px rgba(220, 20, 60, 0.8);
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: #888;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Cards */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+            border: 2px solid var(--dark-red);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            border-color: var(--crimson);
+            box-shadow: var(--glow-red);
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--crimson);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+        }
+
+        .card p {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--blood-red), var(--crimson));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(220, 20, 60, 0.6);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #4a0000, #8B0000);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(74, 0, 0, 0.4);
+            width: 100%;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(45deg, #8B0000, #ff0000);
+            box-shadow: 0 6px 25px rgba(255, 0, 0, 0.6);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Nuke Section */
+        .nuke-section {
+            background: linear-gradient(145deg, #1a0000, #0a0a0a);
+            border: 3px solid var(--blood-red);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nuke-section::before {
+            content: '☢';
+            position: absolute;
+            font-size: 300px;
+            opacity: 0.03;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .nuke-title {
+            font-family: 'Creepster', cursive;
+            font-size: 3rem;
+            color: #ff0000;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+            margin-bottom: 20px;
+        }
+
+        .warning-text {
+            color: #ff6666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        /* Threshold Slider */
+        .threshold-container {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--dark-red);
+        }
+
+        .threshold-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--crimson);
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .slider-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #2a2a2a, var(--dark-red));
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--crimson), #ff0000);
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(220, 20, 60, 0.8);
+            transition: transform 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .threshold-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: #ff0000;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            margin-top: 15px;
+        }
+
+        .threshold-desc {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        /* Status indicators */
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .status-online {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--dark-red);
+            margin-top: 50px;
+            color: #666;
+        }
+
+        footer a {
+            color: var(--crimson);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-shadow: 0 0 10px rgba(220, 20, 60, 0.5);
+        }
+
+        /* Console output */
+        .console {
+            background: #000;
+            border: 1px solid var(--dark-red);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            text-align: left;
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .console-line {
+            color: #0f0;
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .console-line.error {
+            color: #f00;
+        }
+
+        .console-line.warn {
+            color: #ff0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .nuke-title { font-size: 2rem; }
+            .features { grid-template-columns: 1fr; }
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.3;
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Deathwish</h1>
-    <p>The ultimate Discord bot.</p>
+    <!-- Background particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Scanline overlay -->
+    <div class="scanlines"></div>
 
-    <a href="YOUR_DISCORD_BOT_INVITE">
-        Invite Deathwish
-    </a>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <img src="https://i.imgur.com/8QBYRRE.png" alt="DeathWish Bot" class="bot-avatar" id="botAvatar">
+            <h1 class="glitch" data-text="DEATHWISH">DEATHWISH</h1>
+            <p class="tagline">Discord Raid & Nuke Bot</p>
+            <span class="status status-online">● ONLINE</span>
+        </header>
+
+        <!-- Features Grid -->
+        <div class="features">
+            <!-- Raid Card -->
+            <div class="card">
+                <h2><span class="card-icon">⚔️</span> RAID MODULE</h2>
+                <p>Deploy the raid module to target servers with precision. Features include mass messaging, channel flooding, and coordinated attacks.</p>
+                <a href="https://discord.com/oauth2/authorize?client_id=1549941584966062261&integration_type=1&scope=applications.commands" 
+                   class="btn btn-primary" target="_blank">
+                    <span>⚡</span> ADD TO SERVER
+                </a>
+            </div>
+
+            <!-- Stats Card -->
+            <div class="card">
+                <h2><span class="card-icon">📊</span> BOT STATS</h2>
+                <p>Real-time statistics and monitoring. Track successful operations, server count, and command usage.</p>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px;">
+                    <div style="text-align: center; padding: 15px; background: rgba(139, 0, 0, 0.2); border-radius: 10px;">
+                        <div style="font-size: 2rem; color: var(--crimson); font-weight: 700;">1,337</div>
+                        <div style="color: #888; font-size: 0.8rem;">SERVERS</div>
+                    </div>
+                    <div style="text-align: center; padding: 15px; background: rgba(139, 0, 0, 0.2); border-radius: 10px;">
+                        <div style="font-size: 2rem; color: var(--crimson); font-weight: 700;">69K</div>
+                        <div style="color: #888; font-size: 0.8rem;">RAIDS</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuke Section -->
+        <div class="nuke-section">
+            <div class="nuke-title">☢ NUKE PANEL ☢</div>
+            <p class="warning-text">⚠️ WARNING: THIS ACTION IS IRREVERSIBLE ⚠️</p>
+            
+            <div class="threshold-container">
+                <label class="threshold-label">DESTRUCTION THRESHOLD</label>
+                <div class="slider-container">
+                    <input type="range" id="thresholdSlider" min="1" max="100" value="50">
+                </div>
+                <div class="threshold-value" id="thresholdValue">50%</div>
+                <p class="threshold-desc">Adjust the intensity of the nuke operation</p>
+            </div>
+
+            <button class="btn btn-danger" id="nukeBtn" onclick="initiateNuke()">
+                <span>☢</span> INITIATE NUKE SEQUENCE
+            </button>
+
+            <div class="console" id="console">
+                <div class="console-line">> DeathWish v2.0 initialized...</div>
+                <div class="console-line">> Connected to command server...</div>
+                <div class="console-line">> Awaiting input...</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Made with <span style="color: var(--crimson);">♥</span> by DeathWish Team</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">
+                <a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Discord</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Threshold slider
+        const slider = document.getElementById('thresholdSlider');
+        const valueDisplay = document.getElementById('thresholdValue');
+        
+        slider.addEventListener('input', function() {
+            valueDisplay.textContent = this.value + '%';
+            // Change color based on threshold
+            if (this.value < 30) {
+                valueDisplay.style.color = '#0f0';
+            } else if (this.value < 70) {
+                valueDisplay.style.color = '#ff0';
+            } else {
+                valueDisplay.style.color = '#f00';
+            }
+        });
+
+        // Console logging
+        const consoleDiv = document.getElementById('console');
+        
+        function log(message, type = 'info') {
+            const line = document.createElement('div');
+            line.className = 'console-line' + (type ? ' ' + type : '');
+            line.textContent = '> ' + message;
+            consoleDiv.appendChild(line);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
+        // Nuke sequence
+        let nukeInProgress = false;
+        
+        function initiateNuke() {
+            if (nukeInProgress) return;
+            
+            const threshold = slider.value;
+            const btn = document.getElementById('nukeBtn');
+            
+            nukeInProgress = true;
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span> ARMING...';
+            
+            log('Initializing nuke sequence...', 'warn');
+            
+            setTimeout(() => {
+                log(`Threshold set to ${threshold}%`, 'warn');
+            }, 500);
+            
+            setTimeout(() => {
+                log('Bypassing security protocols...', 'error');
+            }, 1000);
+            
+            setTimeout(() => {
+                log('Targeting servers...', 'warn');
+            }, 1500);
+            
+            setTimeout(() => {
+                log('NUKE DEPLOYED ☢', 'error');
+                btn.innerHTML = '<span>☢</span> NUKE DEPLOYED';
+                btn.style.background = '#0f0';
+                
+                // Flash effect
+                document.body.style.animation = 'flash 0.5s';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 500);
+                
+                setTimeout(() => {
+                    nukeInProgress = false;
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>☢</span> INITIATE NUKE SEQUENCE';
+                    btn.style.background = '';
+                    log('Sequence complete. Ready for next command.');
+                }, 3000);
+            }, 2500);
+        }
+
+        // Add flash animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes flash {
+                0%, 100% { filter: brightness(1); }
+                50% { filter: brightness(3) hue-rotate(45deg); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Random console messages
+        const randomMessages = [
+            'Scanning for targets...',
+            'Updating server list...',
+            'Ping: 12ms',
+            'Connection stable',
+            'Modules loaded: 12/12',
+            'Memory usage: 34%',
+            'Heartbeat received'
+        ];
+
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                log(randomMessages[Math.floor(Math.random() * randomMessages.length)]);
+            }
+        }, 5000);
+    </script>
 </body>
 </html>
