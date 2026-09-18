@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeathWish Bot — The Ultimate Discord Raiding Bot</title>
+    <title>DeathWish Bot - Discord Raiding Tool</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,502 +15,700 @@
         }
 
         :root {
-            --purple-primary: #7B2FBE;
-            --purple-light: #9D4EDD;
-            --purple-dark: #5A1A8E;
-            --purple-accent: #C77DFF;
-            --purple-glow: rgba(155, 79, 221, 0.3);
-            --white: #FFFFFF;
-            --off-white: #FAFAFA;
-            --gray-light: #F3F0F7;
-            --gray: #8B8B8B;
-            --gray-dark: #4A4A4A;
-            --text-dark: #1A1A2E;
-            --shadow-purple: 0 4px 20px rgba(123, 47, 190, 0.15);
-            --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.06);
-            --radius: 16px;
-            --radius-sm: 10px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        html {
-            scroll-behavior: smooth;
+            --bg-primary: #2B2D31;
+            --bg-secondary: #313338;
+            --bg-tertiary: #404249;
+            --text-primary: #FFFFFF;
+            --text-secondary: #949BA4;
+            --accent: #5865F2;
+            --accent-hover: #4752C4;
+            --danger: #EB459E;
+            --danger-hover: #D03D8C;
+            --success: #57F287;
+            --gold: #FFD700;
+            --silver: #C0C0C0;
+            --bronze: #CD7F32;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--off-white);
-            color: var(--text-dark);
+            background: var(--bg-primary);
+            color: var(--text-primary);
             line-height: 1.6;
-            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* ===== NAVBAR ===== */
-        .navbar {
-            position: fixed;
+        /* Navigation */
+        nav {
+            background: var(--bg-secondary);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--bg-tertiary);
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(123, 47, 190, 0.1);
-            padding: 16px 0;
-            transition: var(--transition);
-        }
-
-        .navbar.scrolled {
-            box-shadow: var(--shadow-purple);
+            z-index: 100;
         }
 
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .nav-logo {
+        .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
             text-decoration: none;
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: var(--purple-primary);
         }
 
-        .nav-logo svg {
-            width: 36px;
-            height: 36px;
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--danger));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
         }
 
         .nav-links {
             display: flex;
-            gap: 32px;
-            align-items: center;
+            gap: 2rem;
             list-style: none;
         }
 
         .nav-links a {
+            color: var(--text-secondary);
             text-decoration: none;
-            color: var(--text-dark);
             font-weight: 500;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--purple-primary);
-            transition: width 0.3s ease;
+            transition: color 0.2s;
         }
 
         .nav-links a:hover {
-            color: var(--purple-primary);
+            color: var(--text-primary);
         }
 
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-cta {
-            background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
-            color: var(--white) !important;
-            padding: 10px 24px;
-            border-radius: var(--radius-sm);
-            font-weight: 600 !important;
-            transition: var(--transition);
-        }
-
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-purple);
-        }
-
-        .nav-cta::after {
-            display: none;
-        }
-
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            flex-direction: column;
-            gap: 5px;
-            padding: 4px;
-        }
-
-        .mobile-toggle span {
-            width: 24px;
-            height: 2px;
-            background: var(--purple-primary);
-            border-radius: 2px;
-            transition: var(--transition);
-        }
-
-        /* ===== HERO ===== */
+        /* Hero Section */
         .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 6rem 2rem;
             text-align: center;
-            padding: 120px 24px 80px;
-            position: relative;
-            overflow: hidden;
-            background:
-                radial-gradient(ellipse at 20% 50%, rgba(155, 79, 221, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 50%, rgba(199, 125, 255, 0.06) 0%, transparent 50%),
-                var(--off-white);
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -10%;
-            width: 60%;
-            height: 200%;
-            background: radial-gradient(ellipse, rgba(123, 47, 190, 0.04) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(123, 47, 190, 0.08);
-            border: 1px solid rgba(123, 47, 190, 0.2);
-            color: var(--purple-primary);
-            padding: 8px 18px;
-            border-radius: 100px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 28px;
-        }
-
-        .hero-badge .dot {
-            width: 8px;
-            height: 8px;
-            background: #57F287;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
         }
 
         .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 900;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            margin-bottom: 24px;
-            color: var(--text-dark);
-        }
-
-        .hero h1 .gradient {
-            background: linear-gradient(135deg, var(--purple-primary), var(--purple-accent));
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), var(--danger));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .hero p {
-            font-size: 1.2rem;
-            color: var(--gray-dark);
+            font-size: 1.25rem;
+            color: var(--text-secondary);
             max-width: 600px;
-            margin: 0 auto 40px;
-            line-height: 1.7;
+            margin: 0 auto 2rem;
         }
 
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
-            color: var(--white);
-            padding: 16px 36px;
-            border-radius: var(--radius-sm);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.05rem;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 16px rgba(123, 47, 190, 0.3);
+            background: var(--accent);
+            color: white;
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 28px rgba(123, 47, 190, 0.4);
+            background: var(--accent-hover);
+            transform: translateY(-2px);
         }
 
-        .btn-secondary {
-            background: var(--white);
-            color: var(--purple-primary);
-            padding: 16px 36px;
-            border-radius: var(--radius-sm);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.05rem;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            border: 2px solid rgba(123, 47, 190, 0.2);
+        .btn-danger {
+            background: var(--danger);
+            color: white;
         }
 
-        .btn-secondary:hover {
-            border-color: var(--purple-primary);
-            background: rgba(123, 47, 190, 0.04);
-            transform: translateY(-3px);
+        .btn-danger:hover {
+            background: var(--danger-hover);
+            transform: translateY(-2px);
         }
 
-        .hero-stats {
-            display: flex;
-            gap: 48px;
-            justify-content: center;
-            margin-top: 64px;
-            flex-wrap: wrap;
+        /* Stats Section */
+        .stats {
+            padding: 4rem 2rem;
+            background: var(--bg-primary);
         }
 
-        .hero-stat {
-            text-align: center;
-        }
-
-        .hero-stat .number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--purple-primary);
-        }
-
-        .hero-stat .label {
-            font-size: 0.85rem;
-            color: var(--gray);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-top: 4px;
-        }
-
-        /* ===== SECTIONS ===== */
-        section {
-            padding: 100px 24px;
-        }
-
-        .section-container {
+        .container {
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 64px;
-        }
-
-        .section-tag {
-            display: inline-block;
-            color: var(--purple-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 12px;
-        }
-
-        .section-header h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 16px;
-            color: var(--text-dark);
-        }
-
-        .section-header p {
-            color: var(--gray-dark);
-            font-size: 1.1rem;
-            max-width: 580px;
-            margin: 0 auto;
-        }
-
-        /* ===== FEATURES GRID ===== */
-        .features-grid {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
-        .feature-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 36px 32px;
-            transition: var(--transition);
-            border: 1px solid rgba(123, 47, 190, 0.08);
-            position: relative;
-            overflow: hidden;
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--bg-tertiary);
         }
 
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--purple-primary), var(--purple-accent));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
+        .stat-card h3 {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
         }
 
-        .feature-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-purple);
-            border-color: rgba(123, 47, 190, 0.2);
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
         }
 
-        .feature-card:hover::before {
-            transform: scaleX(1);
+        /* Commands Section */
+        .commands {
+            padding: 4rem 2rem;
+            background: var(--bg-secondary);
         }
 
-        .feature-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, rgba(123, 47, 190, 0.1), rgba(199, 125, 255, 0.1));
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .command-categories {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .category {
+            background: var(--bg-primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--bg-tertiary);
+        }
+
+        .category-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--bg-tertiary);
         }
 
-        .feature-icon svg {
-            width: 28px;
-            height: 28px;
-            stroke: var(--purple-primary);
+        .category-icon {
+            font-size: 1.5rem;
         }
 
-        .feature-card h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--text-dark);
+        .category h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
         }
 
-        .feature-card p {
-            color: var(--gray-dark);
-            font-size: 0.98rem;
-            line-height: 1.65;
+        .command-list {
+            display: grid;
+            gap: 0.75rem;
         }
 
-        /* ===== COMMANDS SECTION ===== */
-        .commands-section {
-            background: var(--white);
-        }
-
-        .commands-tabs {
+        .command-item {
             display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 48px;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .command-item:hover {
+            transform: translateX(4px);
+            border-left: 3px solid var(--accent);
+        }
+
+        .command-name {
+            font-family: 'Courier New', monospace;
+            background: var(--bg-tertiary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        .command-info {
+            flex: 1;
+        }
+
+        .command-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .command-info p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .command-args {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
             flex-wrap: wrap;
         }
 
-        .tab-btn {
-            background: var(--gray-light);
-            color: var(--gray-dark);
-            border: none;
-            padding: 12px 28px;
-            border-radius: 100px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: var(--transition);
+        .arg {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.375rem;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            color: var(--text-secondary);
         }
 
-        .tab-btn:hover {
-            background: rgba(123, 47, 190, 0.1);
-            color: var(--purple-primary);
+        .arg.required {
+            color: var(--danger);
         }
 
-        .tab-btn.active {
-            background: linear-gradient(135deg, var(--purple-primary), var(--purple-light));
-            color: var(--white);
-            box-shadow: 0 4px 14px rgba(123, 47, 190, 0.3);
+        /* Features */
+        .features {
+            padding: 4rem 2rem;
+            background: var(--bg-primary);
         }
 
-        .commands-panel {
-            display: none;
-            animation: fadeIn 0.4s ease;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
         }
 
-        .commands-panel.active {
-            display: block;
+        .feature {
+            text-align: center;
+            padding: 2rem;
         }
 
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+        }
+
+        .feature h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature p {
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--bg-tertiary);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .command-item {
+                flex-direction: column;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .commands-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 16px;
+        .stat-card, .command-item, .feature {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">💀</div>
+                <span>DeathWish</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#commands">Commands</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#stats">Stats</a></li>
+                <li><a href="https://discord.gg/low" target="_blank">Support</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>DeathWish Bot</h1>
+        <p>The ultimate Discord raiding and automation tool. Advanced spamming, packing, and server management features with a sleek button-based interface.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot&permissions=8" class="btn btn-primary">
+                <span>➕</span> Add to Server
+            </a>
+            <a href="https://discord.gg/low" class="btn btn-danger">
+                <span>💬</span> Join Support
+            </a>
+        </div>
+    </section>
+
+    <section class="stats" id="stats">
+        <div class="container">
+            <h2 class="section-title">Bot Statistics</h2>
+            <p class="section-subtitle">Real-time command usage and user activity</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Commands</h3>
+                    <div class="stat-value" id="total-commands">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Unique Users</h3>
+                    <div class="stat-value" id="unique-users">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Sessions</h3>
+                    <div class="stat-value" id="active-sessions">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Packs Loaded</h3>
+                    <div class="stat-value" id="packs-loaded">30</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="commands" id="commands">
+        <div class="container">
+            <h2 class="section-title">Command Reference</h2>
+            <p class="section-subtitle">Complete list of available commands and usage</p>
+            
+            <div class="command-categories">
+                <!-- General Commands -->
+                <div class="category">
+                    <div class="category-header">
+                        <span class="category-icon">🌐</span>
+                        <h3>General Commands</h3>
+                    </div>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <span class="command-name">/avatar</span>
+                            <div class="command-info">
+                                <h4>View User Avatar</h4>
+                                <p>Display a user's avatar in full resolution</p>
+                                <div class="command-args">
+                                    <span class="arg">user (optional)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/stats</span>
+                            <div class="command-info">
+                                <h4>Command Statistics</h4>
+                                <p>View detailed command usage statistics with generated chart image</p>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/leaderboard</span>
+                            <div class="command-info">
+                                <h4>User Leaderboard</h4>
+                                <p>View top 10 users by command usage with generated leaderboard image</p>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/help</span>
+                            <div class="command-info">
+                                <h4>Help Menu</h4>
+                                <p>Display all available commands and descriptions</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Raiding Commands -->
+                <div class="category">
+                    <div class="category-header">
+                        <span class="category-icon">⚔️</span>
+                        <h3>Raiding Commands</h3>
+                    </div>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <span class="command-name">/say</span>
+                            <div class="command-info">
+                                <h4>Send Message</h4>
+                                <p>Make the bot say a custom message</p>
+                                <div class="command-args">
+                                    <span class="arg required">message (required)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/spam</span>
+                            <div class="command-info">
+                                <h4>Spam Messages</h4>
+                                <p>Spam a message multiple times with optional delay</p>
+                                <div class="command-args">
+                                    <span class="arg required">message (required)</span>
+                                    <span class="arg required">times: 1-5 (required)</span>
+                                    <span class="arg">delay: 0-60s (optional)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/raid</span>
+                            <div class="command-info">
+                                <h4>Execute Raid</h4>
+                                <p>Send raid messages from raid.txt or raid2.txt</p>
+                                <div class="command-args">
+                                    <span class="arg required">type: 1 or 2 (required)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/emojispam</span>
+                            <div class="command-info">
+                                <h4>Emoji Spam</h4>
+                                <p>Spam emojis from emoji.txt file</p>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/blankspam</span>
+                            <div class="command-info">
+                                <h4>Blank Message Spam</h4>
+                                <p>Spam blank/invisible messages to flood chat</p>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/pollspam</span>
+                            <div class="command-info">
+                                <h4>Poll Spam</h4>
+                                <p>Create 5 polls with random titles from titles.txt and answers from answers.txt</p>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/blame</span>
+                            <div class="command-info">
+                                <h4>Blame User</h4>
+                                <p>Frame a user for raiding</p>
+                                <div class="command-args">
+                                    <span class="arg required">user (required)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/ad</span>
+                            <div class="command-info">
+                                <h4>Send Advertisement</h4>
+                                <p>Send the DeathWish advertisement from ad.txt</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Targeting Commands -->
+                <div class="category">
+                    <div class="category-header">
+                        <span class="category-icon">🎯</span>
+                        <h3>Targeting Commands</h3>
+                    </div>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <span class="command-name">/pack</span>
+                            <div class="command-info">
+                                <h4>Pack User</h4>
+                                <p>Send 5 random insults from pack.txt to a user</p>
+                                <div class="command-args">
+                                    <span class="arg required">user (required)</span>
+                                    <span class="arg">delay: 0-10s (optional)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/rape</span>
+                            <div class="command-info">
+                                <h4>Rape User</h4>
+                                <p>Send 5 messages from rape.txt targeting a user</p>
+                                <div class="command-args">
+                                    <span class="arg required">user (required)</span>
+                                    <span class="arg">delay: 0-10s (optional)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="command-item">
+                            <span class="command-name">/tokenlog</span>
+                            <div class="command-info">
+                                <h4>Generate Token Log</h4>
+                                <p>Generate a realistic fake token and IP for a user</p>
+                                <div class="command-args">
+                                    <span class="arg required">user (required)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Features</h2>
+            <p class="section-subtitle">Why choose DeathWish Bot?</p>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Canvas Generation</h3>
+                    <p>Beautiful stat charts and leaderboards generated with Node Canvas</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">💾</div>
+                    <h3>Persistent Storage</h3>
+                    <p>JSON-based caching and stats that persist between restarts</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Blacklist System</h3>
+                    <p>Server blacklisting with user whitelist bypass capability</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h3>Command Tracking</h3>
+                    <p>Detailed analytics on command usage and user activity</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Button Interface</h3>
+                    <p>Modern Discord button interactions for all commands</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📝</div>
+                    <h3>Customizable Content</h3>
+                    <p>Load custom insults, raid messages, and ads from text files</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>DeathWish Bot &copy; 2025 | Not affiliated with Discord | Use at your own risk</p>
+    </footer>
+
+    <script>
+        // Animate stats counter
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const increment = end > start ? 1 : -1;
+            const stepTime = Math.abs(Math.floor(duration / range));
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                obj.textContent = current.toLocaleString();
+                if (current == end) {
+                    clearInterval(timer);
+                }
+            }, stepTime);
         }
 
-        .command-card {
-            background: var(--off-white);
-            border: 1px solid rgba(123, 47, 190, 0.08);
-            border-radius: var(--radius-sm);
-            padding: 24px;
-            transition: var(--transition);
-        }
+        // Simulate loading stats
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                animateValue('total-commands', 0, 15420, 2000);
+                animateValue('unique-users', 0, 892, 2000);
+                animateValue('active-sessions', 0, 42, 2000);
+            }, 500);
+        });
 
-        .command-card:hover {
-            border-color: rgba(123, 47, 190, 0.25);
-            background: var(--white);
-            box-shadow: var(--shadow-soft);
-        }
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
 
-        .command-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .command-syntax {
-            background: linear-gradient(135deg, rgba(123, 47, 190, 0.08), rgba(199, 125, 255, 0.08));
-            color: var(--purple-primary);
-            padding: 5px 14px;
-            border-radius: 8px;
-            font-family: 'SF Mono', 'Fira Code', monospace;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
+</body>
+</html>
