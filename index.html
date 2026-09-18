@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>DeathWish Bot</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="The ultimate Discord raiding and utility bot" />
+    <meta name="description" content="The ultimate Discord raiding and automation tool" />
     <meta name="author" content="DeathWish" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,6 @@
         --chakra-colors-whiteAlpha-100: rgba(255, 255, 255, 0.06);
         --chakra-colors-whiteAlpha-200: rgba(255, 255, 255, 0.08);
         --chakra-colors-whiteAlpha-300: rgba(255, 255, 255, 0.16);
-        --chakra-colors-whiteAlpha-400: rgba(255, 255, 255, 0.24);
         --chakra-colors-whiteAlpha-600: rgba(255, 255, 255, 0.48);
         --chakra-colors-purple-200: #D6BCFA;
         --chakra-colors-purple-300: #B794F4;
@@ -27,6 +26,7 @@
         --chakra-colors-gray-600: #4A5568;
         --chakra-colors-gray-700: #2D3748;
         --chakra-colors-gray-800: #1A202C;
+        --chakra-colors-red-500: #EB459E;
         --chakra-radii-md: 0.375rem;
         --chakra-radii-lg: 0.5rem;
         --chakra-space-1: 0.25rem;
@@ -49,15 +49,6 @@
         --chakra-fontSizes-xl: 1.25rem;
         --chakra-fontSizes-3xl: 1.875rem;
         --chakra-fontSizes-4xl: 2.25rem;
-        --chakra-lineHeights-base: 1.5;
-        --chakra-lineHeights-tall: 1.625;
-        --chakra-transition-property-common: background-color,border-color,color,fill,stroke,opacity,box-shadow,transform;
-        --chakra-transition-duration-fast: 150ms;
-        --chakra-transition-duration-normal: 200ms;
-        --chakra-shadows-outline: 0 0 0 3px rgba(66, 153, 225, 0.6);
-        --chakra-sizes-container-md: 768px;
-        --chakra-sizes-container-lg: 1024px;
-        --chakra-sizes-prose: 60ch;
       }
 
       * {
@@ -74,21 +65,20 @@
         font-family: var(--chakra-fonts-body);
         background: var(--chakra-colors-black);
         color: var(--chakra-colors-white);
-        line-height: var(--chakra-lineHeights-base);
+        line-height: 1.5;
         min-height: 100vh;
       }
 
       a {
         color: mediumpurple;
         text-decoration: none;
-        transition: all var(--chakra-transition-duration-fast);
+        transition: all 0.15s;
       }
 
       a:hover {
         text-decoration: underline;
       }
 
-      /* Navigation */
       nav {
         position: fixed;
         top: 0;
@@ -101,7 +91,7 @@
       }
 
       .nav-container {
-        max-width: var(--chakra-sizes-container-lg);
+        max-width: 1024px;
         margin: 0 auto;
         display: flex;
         justify-content: space-between;
@@ -141,14 +131,13 @@
         text-decoration: none;
         font-weight: 500;
         font-size: var(--chakra-fontSizes-sm);
-        transition: color var(--chakra-transition-duration-fast);
+        transition: color 0.15s;
       }
 
       .nav-links a:hover {
         color: var(--chakra-colors-white);
       }
 
-      /* Hero Section */
       .hero {
         padding: 10rem 2rem 6rem;
         text-align: center;
@@ -191,7 +180,7 @@
         font-size: var(--chakra-fontSizes-lg);
         color: var(--chakra-colors-whiteAlpha-600);
         margin-bottom: var(--chakra-space-8);
-        line-height: var(--chakra-lineHeights-tall);
+        line-height: 1.625;
       }
 
       .btn-group {
@@ -209,7 +198,7 @@
         border-radius: var(--chakra-radii-md);
         font-weight: var(--chakra-fontWeights-semibold);
         text-decoration: none;
-        transition: all var(--chakra-transition-duration-normal);
+        transition: all 0.2s;
         border: none;
         cursor: pointer;
         font-size: var(--chakra-fontSizes-md);
@@ -237,14 +226,23 @@
         text-decoration: none;
       }
 
-      /* Container */
+      .btn-discord {
+        background: #5865F2;
+        color: white;
+      }
+
+      .btn-discord:hover {
+        background: #4752C4;
+        transform: translateY(-2px);
+        text-decoration: none;
+      }
+
       .container {
-        max-width: var(--chakra-sizes-container-lg);
+        max-width: 1024px;
         margin: 0 auto;
         padding: 0 var(--chakra-space-4);
       }
 
-      /* Stats Section */
       .stats {
         padding: var(--chakra-space-20) var(--chakra-space-4);
         background: var(--chakra-colors-black);
@@ -280,10 +278,9 @@
         color: mediumpurple;
       }
 
-      /* Commands Section */
-      .commands {
+      .auth-section {
         padding: var(--chakra-space-20) var(--chakra-space-4);
-        background: var(--chakra-colors-black);
+        background: linear-gradient(180deg, var(--chakra-colors-black) 0%, rgba(128, 90, 213, 0.05) 100%);
       }
 
       .section-title {
@@ -298,6 +295,84 @@
         color: var(--chakra-colors-whiteAlpha-600);
         text-align: center;
         margin-bottom: var(--chakra-space-10);
+      }
+
+      .auth-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: var(--chakra-space-8);
+        margin-bottom: var(--chakra-space-20);
+      }
+
+      .auth-card {
+        background: var(--chakra-colors-whiteAlpha-50);
+        border: 1px solid var(--chakra-colors-whiteAlpha-100);
+        border-radius: var(--chakra-radii-lg);
+        padding: var(--chakra-space-8);
+        text-align: center;
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .auth-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #805AD5, #EB459E);
+      }
+
+      .auth-card.nuke-card::before {
+        background: linear-gradient(90deg, #EB459E, #FF0000);
+      }
+
+      .auth-icon {
+        width: 64px;
+        height: 64px;
+        background: var(--chakra-colors-whiteAlpha-100);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto var(--chakra-space-5);
+        font-size: 2rem;
+      }
+
+      .auth-card h3 {
+        font-family: var(--chakra-fonts-heading);
+        font-size: var(--chakra-fontSizes-xl);
+        font-weight: var(--chakra-fontWeights-bold);
+        margin-bottom: var(--chakra-space-3);
+      }
+
+      .auth-card p {
+        color: var(--chakra-colors-whiteAlpha-600);
+        font-size: var(--chakra-fontSizes-sm);
+        margin-bottom: var(--chakra-space-6);
+      }
+
+      .placeholder-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--chakra-space-2);
+        padding: var(--chakra-space-3) var(--chakra-space-6);
+        border-radius: var(--chakra-radii-md);
+        font-weight: var(--chakra-fontWeights-semibold);
+        font-size: var(--chakra-fontSizes-md);
+        background: var(--chakra-colors-whiteAlpha-100);
+        color: var(--chakra-colors-whiteAlpha-600);
+        border: 2px dashed var(--chakra-colors-whiteAlpha-300);
+        cursor: not-allowed;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .commands {
+        padding: var(--chakra-space-20) var(--chakra-space-4);
+        background: var(--chakra-colors-black);
       }
 
       .bot-section {
@@ -316,12 +391,16 @@
       .bot-icon {
         width: 48px;
         height: 48px;
-        background: linear-gradient(135deg, #805AD5, #EB459E);
+        background: linear-gradient(135deg, #EB459E, #FF0000);
         border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.5rem;
+      }
+
+      .bot-icon.raid-icon {
+        background: linear-gradient(135deg, #805AD5, #5865F2);
       }
 
       .bot-title {
@@ -346,7 +425,7 @@
         border: 1px solid var(--chakra-colors-whiteAlpha-100);
         border-radius: var(--chakra-radii-lg);
         padding: var(--chakra-space-5);
-        transition: all var(--chakra-transition-duration-fast);
+        transition: all 0.15s;
         backdrop-filter: blur(5px);
       }
 
@@ -371,6 +450,7 @@
         font-size: var(--chakra-fontSizes-sm);
         font-weight: var(--chakra-fontWeights-bold);
         color: mediumpurple;
+        white-space: nowrap;
       }
 
       .command-category {
@@ -383,7 +463,7 @@
       .command-desc {
         color: var(--chakra-colors-whiteAlpha-600);
         font-size: var(--chakra-fontSizes-sm);
-        line-height: var(--chakra-lineHeights-tall);
+        line-height: 1.625;
       }
 
       .command-args {
@@ -406,7 +486,6 @@
         background: rgba(235, 69, 158, 0.1);
       }
 
-      /* Features Section */
       .features {
         padding: var(--chakra-space-20) var(--chakra-space-4);
         background: linear-gradient(180deg, var(--chakra-colors-black) 0%, rgba(128, 90, 213, 0.05) 100%);
@@ -452,59 +531,6 @@
         font-size: var(--chakra-fontSizes-sm);
       }
 
-      /* About Section */
-      .about {
-        padding: var(--chakra-space-20) var(--chakra-space-4);
-        background: var(--chakra-colors-black);
-      }
-
-      .about-card {
-        max-width: var(--chakra-sizes-container-md);
-        margin: 0 auto;
-        background: var(--chakra-colors-whiteAlpha-50);
-        border: 1px solid var(--chakra-colors-whiteAlpha-100);
-        border-radius: var(--chakra-radii-lg);
-        padding: var(--chakra-space-8);
-        backdrop-filter: blur(5px);
-      }
-
-      .about-card h2 {
-        font-family: var(--chakra-fonts-heading);
-        color: mediumpurple;
-        font-size: var(--chakra-fontSizes-xl);
-        font-weight: var(--chakra-fontWeights-bold);
-        text-align: center;
-        margin-bottom: var(--chakra-space-6);
-      }
-
-      .about-card p {
-        color: var(--chakra-colors-whiteAlpha-600);
-        text-align: justify;
-        text-indent: 1em;
-        line-height: var(--chakra-lineHeights-tall);
-        margin-bottom: var(--chakra-space-6);
-      }
-
-      .telegram-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--chakra-space-2);
-        background: #0088cc;
-        color: white;
-        padding: var(--chakra-space-3) var(--chakra-space-6);
-        border-radius: var(--chakra-radii-md);
-        font-weight: var(--chakra-fontWeights-semibold);
-        text-decoration: none;
-        transition: all var(--chakra-transition-duration-normal);
-      }
-
-      .telegram-btn:hover {
-        background: #0099dd;
-        transform: translateY(-2px);
-        text-decoration: none;
-      }
-
-      /* Footer */
       footer {
         background: var(--chakra-colors-black);
         border-top: 1px solid var(--chakra-colors-whiteAlpha-100);
@@ -517,7 +543,6 @@
         font-size: var(--chakra-fontSizes-sm);
       }
 
-      /* Responsive */
       @media (max-width: 768px) {
         .hero h1 {
           font-size: var(--chakra-fontSizes-3xl);
@@ -535,9 +560,12 @@
           flex-direction: column;
           align-items: center;
         }
+
+        .auth-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
-      /* Scrollbar */
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -555,13 +583,12 @@
         background: var(--chakra-colors-gray-600);
       }
 
-      /* Animations */
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
       }
 
-      .stat-card, .command-card, .feature-card {
+      .stat-card, .command-card, .feature-card, .auth-card {
         animation: fadeIn 0.6s ease-out forwards;
       }
     </style>
@@ -574,10 +601,11 @@
           <span>DeathWish</span>
         </a>
         <ul class="nav-links">
+          <li><a href="#auth">Authorize</a></li>
           <li><a href="#commands">Commands</a></li>
           <li><a href="#features">Features</a></li>
-          <li><a href="#about">About</a></li>
           <li><a href="https://t.me/deathwishdc" target="_blank">Telegram</a></li>
+          <li><a href="https://discord.gg/Qsdz9hW582" target="_blank">Discord</a></li>
         </ul>
       </div>
     </nav>
@@ -585,13 +613,13 @@
     <section class="hero">
       <div class="hero-content">
         <h1>DEATHWISH BOT</h1>
-        <p>The ultimate Discord raiding and automation tool. Advanced spamming, packing, and server management features with a sleek button-based interface.</p>
+        <p>The ultimate Discord raiding and automation tool. Advanced spamming, packing, and server destruction features with a sleek button-based interface.</p>
         <div class="btn-group">
-          <a href="https://discord.gg/5jJHGNr5Bt" class="btn btn-primary">
-            <span>➕</span> Add to Server
-          </a>
-          <a href="https://t.me/deathwishdc" class="btn btn-secondary">
+          <a href="https://t.me/deathwishdc" class="btn btn-secondary" target="_blank">
             <span>✈️</span> Join Telegram
+          </a>
+          <a href="https://discord.gg/Qsdz9hW582" class="btn btn-discord" target="_blank">
+            <span>💬</span> Join Discord
           </a>
         </div>
       </div>
@@ -601,20 +629,47 @@
       <div class="container">
         <div class="stats-grid">
           <div class="stat-card">
-            <h3>Total Commands</h3>
-            <div class="stat-value">80+</div>
-          </div>
-          <div class="stat-card">
-            <h3>Utility Commands</h3>
-            <div class="stat-value">30+</div>
-          </div>
-          <div class="stat-card">
             <h3>Raid Commands</h3>
-            <div class="stat-value">50+</div>
+            <div class="stat-value">11</div>
+          </div>
+          <div class="stat-card">
+            <h3>Nuke Commands</h3>
+            <div class="stat-value">40+</div>
           </div>
           <div class="stat-card">
             <h3>Shard Count</h3>
             <div class="stat-value">Auto</div>
+          </div>
+          <div class="stat-card">
+            <h3>Success Rate</h3>
+            <div class="stat-value">99%</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-section" id="auth">
+      <div class="container">
+        <h2 class="section-title">Authorization</h2>
+        <p class="section-subtitle">Connect your server to unlock advanced features</p>
+        
+        <div class="auth-grid">
+          <div class="auth-card nuke-card">
+            <div class="auth-icon">☢️</div>
+            <h3>DeathWish Nuke</h3>
+            <p>Full server destruction capabilities including mass deletion, creation, and advanced spamming features.</p>
+            <div class="placeholder-btn">
+              <span>🔒</span> Authorize Nuke Bot (Coming Soon)
+            </div>
+          </div>
+
+          <div class="auth-card">
+            <div class="auth-icon">⚔️</div>
+            <h3>DeathWish Raid</h3>
+            <p>Advanced raiding tools with button controls, packing, spamming, and targeting features.</p>
+            <div class="placeholder-btn">
+              <span>🔒</span> Authorize Raid Bot (Coming Soon)
+            </div>
           </div>
         </div>
       </div>
@@ -623,298 +678,141 @@
     <section class="commands" id="commands">
       <div class="container">
         <h2 class="section-title">Command Reference</h2>
-        <p class="section-subtitle">Complete list of available commands and usage</p>
+        <p class="section-subtitle">Complete list of available raid and nuke commands</p>
 
-        <!-- Main Bot Section -->
+        <!-- Raid Bot Commands (from help command) -->
         <div class="bot-section">
           <div class="bot-header">
-            <div class="bot-icon">🛡️</div>
+            <div class="bot-icon raid-icon">⚔️</div>
             <div>
-              <h3 class="bot-title">DeathWish Utilities</h3>
-              <p class="bot-desc">General purpose moderation and utility commands</p>
+              <h3 class="bot-title">DeathWish Raid</h3>
+              <p class="bot-desc">Button-controlled raiding and targeting commands</p>
             </div>
           </div>
           
           <div class="command-grid">
             <div class="command-card">
               <div class="command-header">
-                <span class="command-name">/help</span>
-                <span class="command-category">General</span>
+                <span class="command-name">/say</span>
+                <span class="command-category">Raiding</span>
               </div>
-              <p class="command-desc">Show bot commands - Giveaways, starboard, sticky, AFK, translation, games, and more.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/ping</span>
-                <span class="command-category">General</span>
-              </div>
-              <p class="command-desc">Check latency - Shows global and shard latency in milliseconds.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/userinfo</span>
-                <span class="command-category">Info</span>
-              </div>
-              <p class="command-desc">Show user info - Display account creation date, join date, roles, and avatar.</p>
+              <p class="command-desc">Send a message</p>
               <div class="command-args">
-                <span class="arg">user (optional)</span>
+                <span class="arg required">&lt;message&gt;</span>
               </div>
             </div>
 
             <div class="command-card">
               <div class="command-header">
-                <span class="command-name">/serverinfo</span>
-                <span class="command-category">Info</span>
+                <span class="command-name">/spam</span>
+                <span class="command-category">Raiding</span>
               </div>
-              <p class="command-desc">Show server info - Member count, channels, roles, boosts, and creation date.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/avatar</span>
-                <span class="command-category">Info</span>
-              </div>
-              <p class="command-desc">Show user avatar in full resolution.</p>
+              <p class="command-desc">Spam messages</p>
               <div class="command-args">
-                <span class="arg">user (optional)</span>
+                <span class="arg required">&lt;message&gt;</span>
+                <span class="arg required">&lt;times&gt;</span>
+                <span class="arg">[delay]</span>
               </div>
             </div>
 
             <div class="command-card">
               <div class="command-header">
-                <span class="command-name">/banner</span>
-                <span class="command-category">Info</span>
+                <span class="command-name">/raid</span>
+                <span class="command-category">Raiding</span>
               </div>
-              <p class="command-desc">Show user banner in full resolution if set.</p>
+              <p class="command-desc">Execute raid (1 or 2)</p>
               <div class="command-args">
-                <span class="arg">user (optional)</span>
+                <span class="arg required">&lt;type&gt;</span>
               </div>
             </div>
 
             <div class="command-card">
               <div class="command-header">
-                <span class="command-name">/roleinfo</span>
-                <span class="command-category">Info</span>
+                <span class="command-name">/emojispam</span>
+                <span class="command-category">Raiding</span>
               </div>
-              <p class="command-desc">Show role information including member count and permissions.</p>
+              <p class="command-desc">Spam emojis</p>
+            </div>
+
+            <div class="command-card">
+              <div class="command-header">
+                <span class="command-name">/blankspam</span>
+                <span class="command-category">Raiding</span>
+              </div>
+              <p class="command-desc">Spams blank messages</p>
+            </div>
+
+            <div class="command-card">
+              <div class="command-header">
+                <span class="command-name">/pollspam</span>
+                <span class="command-category">Raiding</span>
+              </div>
+              <p class="command-desc">Spams polls</p>
+            </div>
+
+            <div class="command-card">
+              <div class="command-header">
+                <span class="command-name">/blame</span>
+                <span class="command-category">Raiding</span>
+              </div>
+              <p class="command-desc">Blame someone for raiding</p>
               <div class="command-args">
-                <span class="arg required">role (required)</span>
+                <span class="arg required">&lt;user&gt;</span>
               </div>
             </div>
 
             <div class="command-card">
               <div class="command-header">
-                <span class="command-name">/membercount</span>
-                <span class="command-category">Info</span>
+                <span class="command-name">/ad</span>
+                <span class="command-category">Raiding</span>
               </div>
-              <p class="command-desc">Show detailed member statistics including humans, bots, and online count.</p>
+              <p class="command-desc">Send advertisement</p>
             </div>
 
             <div class="command-card">
               <div class="command-header">
-                <span class="command-name">/emoji</span>
-                <span class="command-category">Tools</span>
+                <span class="command-name">/pack</span>
+                <span class="command-category">Targeting</span>
               </div>
-              <p class="command-desc">Enlarge custom emoji to full size with ID information.</p>
+              <p class="command-desc">Pack a user</p>
               <div class="command-args">
-                <span class="arg required">emoji (required)</span>
+                <span class="arg required">&lt;user&gt;</span>
+                <span class="arg">[delay]</span>
               </div>
             </div>
 
             <div class="command-card">
               <div class="command-header">
-                <span class="command-name">/poll</span>
-                <span class="command-category">Tools</span>
+                <span class="command-name">/rape</span>
+                <span class="command-category">Targeting</span>
               </div>
-              <p class="command-desc">Create a poll with up to 4 options using emoji reactions.</p>
+              <p class="command-desc">Rape a user</p>
               <div class="command-args">
-                <span class="arg required">question (required)</span>
-                <span class="arg required">option1 (required)</span>
-                <span class="arg required">option2 (required)</span>
-                <span class="arg">option3 (optional)</span>
-                <span class="arg">option4 (optional)</span>
+                <span class="arg required">&lt;user&gt;</span>
+                <span class="arg">[delay]</span>
               </div>
             </div>
 
             <div class="command-card">
               <div class="command-header">
-                <span class="command-name">/remind</span>
-                <span class="command-category">Tools</span>
+                <span class="command-name">/tokenlog</span>
+                <span class="command-category">Targeting</span>
               </div>
-              <p class="command-desc">Set a reminder for a specific duration.</p>
+              <p class="command-desc">Generate a token log</p>
               <div class="command-args">
-                <span class="arg required">when (required)</span>
-                <span class="arg required">text (required)</span>
+                <span class="arg required">&lt;user&gt;</span>
               </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/snipe</span>
-                <span class="command-category">Tools</span>
-              </div>
-              <p class="command-desc">View the last deleted message in the channel.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/editsnipe</span>
-                <span class="command-category">Tools</span>
-              </div>
-              <p class="command-desc">View the last edited message before and after content.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/purge</span>
-                <span class="command-category">Moderation</span>
-              </div>
-              <p class="command-desc">Delete messages in bulk (1-100), optionally filtered by user.</p>
-              <div class="command-args">
-                <span class="arg required">amount (required)</span>
-                <span class="arg">user (optional)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/lock</span>
-                <span class="command-category">Moderation</span>
-              </div>
-              <p class="command-desc">Lock a channel to prevent @everyone from sending messages.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/unlock</span>
-                <span class="command-category">Moderation</span>
-              </div>
-              <p class="command-desc">Unlock a previously locked channel.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/nick</span>
-                <span class="command-category">Moderation</span>
-              </div>
-              <p class="command-desc">Change a member's nickname.</p>
-              <div class="command-args">
-                <span class="arg required">member (required)</span>
-                <span class="arg">nickname (optional)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/choose</span>
-                <span class="command-category">Fun</span>
-              </div>
-              <p class="command-desc">Randomly pick from multiple options separated by commas.</p>
-              <div class="command-args">
-                <span class="arg required">options (required)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/calc</span>
-                <span class="command-category">Fun</span>
-              </div>
-              <p class="command-desc">Calculate mathematical expressions.</p>
-              <div class="command-args">
-                <span class="arg required">expression (required)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/define</span>
-                <span class="command-category">Fun</span>
-              </div>
-              <p class="command-desc">Look up word definitions using dictionary API.</p>
-              <div class="command-args">
-                <span class="arg required">word (required)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/wikipedia</span>
-                <span class="command-category">Fun</span>
-              </div>
-              <p class="command-desc">Search Wikipedia for articles and summaries.</p>
-              <div class="command-args">
-                <span class="arg required">query (required)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/translate</span>
-                <span class="command-category">Tools</span>
-              </div>
-              <p class="command-desc">Translate text between languages using MyMemory API.</p>
-              <div class="command-args">
-                <span class="arg required">text (required)</span>
-                <span class="arg required">to_lang (required)</span>
-                <span class="arg">from_lang (optional)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/afk</span>
-                <span class="command-category">Tools</span>
-              </div>
-              <p class="command-desc">Set AFK status with optional reason. Automatically clears when you return.</p>
-              <div class="command-args">
-                <span class="arg">reason (optional)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/giveaway</span>
-                <span class="command-category">Management</span>
-              </div>
-              <p class="command-desc">Create and manage giveaways with start, end, reroll, and list subcommands.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/starboard</span>
-                <span class="command-category">Management</span>
-              </div>
-              <p class="command-desc">Setup starboard to highlight popular messages with reactions.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/sticky</span>
-                <span class="command-category">Management</span>
-              </div>
-              <p class="command-desc">Keep a message stuck to the bottom of a channel.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/game</span>
-                <span class="command-category">Fun</span>
-              </div>
-              <p class="command-desc">Play games including coinflip, dice, rps, eightball, and trivia.</p>
             </div>
           </div>
         </div>
 
-        <!-- Nuke Bot Section -->
+        <!-- Nuke Bot Commands -->
         <div class="bot-section">
           <div class="bot-header">
-            <div class="bot-icon" style="background: linear-gradient(135deg, #EB459E, #FF0000);">☢️</div>
+            <div class="bot-icon">☢️</div>
             <div>
               <h3 class="bot-title">DeathWish Nuke</h3>
-              <p class="bot-desc">Advanced raiding and destruction commands (DeathWish members only)</p>
+              <p class="bot-desc">Server destruction and mass action commands (DeathWish members only)</p>
             </div>
           </div>
 
@@ -924,13 +822,13 @@
                 <span class="command-name">/nuke</span>
                 <span class="command-category">Destruction</span>
               </div>
-              <p class="command-desc">Full server nuke - deletes channels, creates new ones, renames server, and spams with cooldown protection.</p>
+              <p class="command-desc">Full server nuke - deletes channels, creates new ones, renames server, and spams.</p>
               <div class="command-args">
-                <span class="arg">server_name (optional)</span>
-                <span class="arg">channel_name (optional)</span>
-                <span class="arg">channel_count (optional)</span>
-                <span class="arg">spam_message (optional)</span>
-                <span class="arg">icon_url (optional)</span>
+                <span class="arg">[server_name]</span>
+                <span class="arg">[channel_name]</span>
+                <span class="arg">[channel_count]</span>
+                <span class="arg">[spam_message]</span>
+                <span class="arg">[icon_url]</span>
               </div>
             </div>
 
@@ -949,8 +847,8 @@
               </div>
               <p class="command-desc">Create text channels in bulk (up to 200).</p>
               <div class="command-args">
-                <span class="arg">channel_name (optional)</span>
-                <span class="arg">amount (optional)</span>
+                <span class="arg">[channel_name]</span>
+                <span class="arg">[amount]</span>
               </div>
             </div>
 
@@ -961,8 +859,8 @@
               </div>
               <p class="command-desc">Create roles in bulk (up to 250).</p>
               <div class="command-args">
-                <span class="arg">role_name (optional)</span>
-                <span class="arg">amount (optional)</span>
+                <span class="arg">[role_name]</span>
+                <span class="arg">[amount]</span>
               </div>
             </div>
 
@@ -973,7 +871,7 @@
               </div>
               <p class="command-desc">Rename all channels to specified name.</p>
               <div class="command-args">
-                <span class="arg">new_name (optional)</span>
+                <span class="arg">[new_name]</span>
               </div>
             </div>
 
@@ -984,7 +882,7 @@
               </div>
               <p class="command-desc">Rename all roles to specified name.</p>
               <div class="command-args">
-                <span class="arg">new_name (optional)</span>
+                <span class="arg">[new_name]</span>
               </div>
             </div>
 
@@ -995,7 +893,7 @@
               </div>
               <p class="command-desc">Change server name.</p>
               <div class="command-args">
-                <span class="arg">new_name (optional)</span>
+                <span class="arg">[new_name]</span>
               </div>
             </div>
 
@@ -1022,7 +920,7 @@
               </div>
               <p class="command-desc">Change nickname of all members.</p>
               <div class="command-args">
-                <span class="arg">nickname (optional)</span>
+                <span class="arg">[nickname]</span>
               </div>
             </div>
 
@@ -1068,66 +966,18 @@
 
             <div class="command-card">
               <div class="command-header">
-                <span class="command-name">/delcats</span>
-                <span class="command-category">Deletion</span>
-              </div>
-              <p class="command-desc">Delete all channel categories.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/delthreads</span>
-                <span class="command-category">Deletion</span>
-              </div>
-              <p class="command-desc">Delete all threads including archived ones.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/delevents</span>
-                <span class="command-category">Deletion</span>
-              </div>
-              <p class="command-desc">Delete all scheduled events.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/createcats</span>
-                <span class="command-category">Creation</span>
-              </div>
-              <p class="command-desc">Create channel categories in bulk.</p>
-              <div class="command-args">
-                <span class="arg">name (optional)</span>
-                <span class="arg">amount (optional)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/voicechans</span>
-                <span class="command-category">Creation</span>
-              </div>
-              <p class="command-desc">Create voice channels in bulk.</p>
-              <div class="command-args">
-                <span class="arg">name (optional)</span>
-                <span class="arg">amount (optional)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
                 <span class="command-name">/spem</span>
                 <span class="command-category">Premium</span>
               </div>
               <p class="command-desc">Premium embed nuke with custom title, description, image, and button.</p>
               <div class="command-args">
-                <span class="arg required">title (required)</span>
-                <span class="arg required">description (required)</span>
-                <span class="arg required">spam_message (required)</span>
-                <span class="arg required">channel_name (required)</span>
-                <span class="arg">num_channels (optional)</span>
-                <span class="arg">image_url (optional)</span>
-                <span class="arg">button_url (optional)</span>
+                <span class="arg required">&lt;title&gt;</span>
+                <span class="arg required">&lt;description&gt;</span>
+                <span class="arg required">&lt;spam_message&gt;</span>
+                <span class="arg required">&lt;channel_name&gt;</span>
+                <span class="arg">[num_channels]</span>
+                <span class="arg">[image_url]</span>
+                <span class="arg">[button_url]</span>
               </div>
             </div>
 
@@ -1138,11 +988,11 @@
               </div>
               <p class="command-desc">Spam NSFW images from nekobot API.</p>
               <div class="command-args">
-                <span class="arg required">category (required)</span>
-                <span class="arg">channel_name (optional)</span>
-                <span class="arg">channel_count (optional)</span>
-                <span class="arg">duration (optional)</span>
-                <span class="arg">wipe (optional)</span>
+                <span class="arg required">&lt;category&gt;</span>
+                <span class="arg">[channel_name]</span>
+                <span class="arg">[channel_count]</span>
+                <span class="arg">[duration]</span>
+                <span class="arg">[wipe]</span>
               </div>
             </div>
 
@@ -1153,26 +1003,11 @@
               </div>
               <p class="command-desc">Spam images from specified subreddit.</p>
               <div class="command-args">
-                <span class="arg required">subreddit (required)</span>
-                <span class="arg">channel_name (optional)</span>
-                <span class="arg">channel_count (optional)</span>
-                <span class="arg">duration (optional)</span>
-                <span class="arg">wipe (optional)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/r34spam</span>
-                <span class="command-category">Premium</span>
-              </div>
-              <p class="command-desc">Spam images from Rule34 with specified tags.</p>
-              <div class="command-args">
-                <span class="arg required">tags (required)</span>
-                <span class="arg">channel_name (optional)</span>
-                <span class="arg">channel_count (optional)</span>
-                <span class="arg">duration (optional)</span>
-                <span class="arg">wipe (optional)</span>
+                <span class="arg required">&lt;subreddit&gt;</span>
+                <span class="arg">[channel_name]</span>
+                <span class="arg">[channel_count]</span>
+                <span class="arg">[duration]</span>
+                <span class="arg">[wipe]</span>
               </div>
             </div>
 
@@ -1183,52 +1018,8 @@
               </div>
               <p class="command-desc">Create multiple admin roles.</p>
               <div class="command-args">
-                <span class="arg">amount (optional)</span>
+                <span class="arg">[amount]</span>
               </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/striproles</span>
-                <span class="command-category">Premium</span>
-              </div>
-              <p class="command-desc">Strip permissions from all roles.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/stripeveryone</span>
-                <span class="command-category">Premium</span>
-              </div>
-              <p class="command-desc">Strip all permissions from @everyone role.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/forumflood</span>
-                <span class="command-category">Premium</span>
-              </div>
-              <p class="command-desc">Create forum channels in bulk.</p>
-              <div class="command-args">
-                <span class="arg">name (optional)</span>
-                <span class="arg">amount (optional)</span>
-              </div>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/nsfwflag</span>
-                <span class="command-category">Server</span>
-              </div>
-              <p class="command-desc">Flag all text channels as NSFW.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/slowmode</span>
-                <span class="command-category">Server</span>
-              </div>
-              <p class="command-desc">Set maximum slowmode (6 hours) on all channels.</p>
             </div>
 
             <div class="command-card">
@@ -1246,7 +1037,7 @@
               </div>
               <p class="command-desc">Grant administrator role to specified user.</p>
               <div class="command-args">
-                <span class="arg required">user (required)</span>
+                <span class="arg required">&lt;user&gt;</span>
               </div>
             </div>
 
@@ -1256,38 +1047,6 @@
                 <span class="command-category">Server</span>
               </div>
               <p class="command-desc">Grant all permissions to @everyone role.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/invertperms</span>
-                <span class="command-category">Server</span>
-              </div>
-              <p class="command-desc">Invert permissions on all channels for @everyone.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/nukeboard</span>
-                <span class="command-category">Stats</span>
-              </div>
-              <p class="command-desc">Display top nukes leaderboard with generated image.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/serverlist</span>
-                <span class="command-category">Info</span>
-              </div>
-              <p class="command-desc">DM list of servers the bot is in with shard info.</p>
-            </div>
-
-            <div class="command-card">
-              <div class="command-header">
-                <span class="command-name">/inv</span>
-                <span class="command-category">Tools</span>
-              </div>
-              <p class="command-desc">Create invites for all text channels and DM them.</p>
             </div>
           </div>
         </div>
@@ -1310,11 +1069,6 @@
             <p>Beautiful nuke leaderboards and statistics generated with PIL/Pillow.</p>
           </div>
           <div class="feature-card">
-            <div class="feature-icon">💾</div>
-            <h3>Persistent Storage</h3>
-            <p>JSON-based data storage for giveaways, AFK status, sticky messages, and starboard.</p>
-          </div>
-          <div class="feature-card">
             <div class="feature-icon">🔒</div>
             <h3>Authorization System</h3>
             <p>DeathWish member-only commands with automatic guild membership checking.</p>
@@ -1329,56 +1083,20 @@
             <h3>Premium Tiers</h3>
             <p>Free and premium command tiers with mass action limits and custom parameters.</p>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="about" id="about">
-      <div class="container">
-        <div class="about-card">
-          <h2>WHY ARE WE THE BEST?</h2>
-          <p>
-            We've been involved in the Discord raiding scene since 2024, and we're still here. DeathWish has remained a reliable and trusted Discord automation tool. With our software, you get to utilize our powerful set of customizable raiding and utility features. Our features are continuously updated to the latest Discord API versions.
-          </p>
-          <p>
-            Unlike other bots that crash or get rate limited instantly, DeathWish uses intelligent sharding, rate limit detection, and cooldown systems to ensure your raids complete successfully. We offer both utility commands for server management and powerful raiding tools for authorized users.
-          </p>
-          <div style="text-align: center; margin-top: 2rem;">
-            <a href="https://t.me/deathwishdc" class="telegram-btn" target="_blank">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.122-2.678-1.799-1.185-.781-.417-1.21.258-1.911.353-.364 6.461-5.92 6.58-6.418.014-.062.027-.285-.106-.404-.133-.118-.329-.078-.471-.046-.201.046-3.235 2.058-9.131 6.031-.864.593-1.645.883-2.342.867-.77-.017-2.252-.437-3.357-.795-1.352-.436-2.428-.667-2.335-1.405.046-.386.579-.783 1.598-1.19 6.269-2.726 10.455-4.523 12.558-5.396.5-.212.964-.316 1.366-.316.451 0 .809.235 1.033.706.146.305.329.843.547 1.614.458 1.587.774 2.686.948 3.296.235.824.5 1.763.793 2.817.293 1.054.586 1.968.879 2.742z"/>
-              </svg>
-              Join Telegram
-            </a>
+          <div class="feature-card">
+            <div class="feature-icon">☢️</div>
+            <h3>Dual Bot System</h3>
+            <p>Separate raid and nuke bots for different use cases and permission levels.</p>
           </div>
         </div>
       </div>
     </section>
 
     <footer>
-      <p>DeathWish Bot &copy; 2025 | Not affiliated with Discord | <a href="https://t.me/deathwishdc">Telegram</a> | Use at your own risk</p>
+      <p>DeathWish Bot &copy; 2025 | Not affiliated with Discord | <a href="https://t.me/deathwishdc">Telegram</a> | <a href="https://discord.gg/Qsdz9hW582">Discord</a> | Use at your own risk</p>
     </footer>
 
     <script>
-      // Animate stats counter
-      function animateValue(id, start, end, duration) {
-        const obj = document.getElementById(id);
-        if (!obj) return;
-        const range = end - start;
-        const increment = end > start ? 1 : -1;
-        const stepTime = Math.abs(Math.floor(duration / range));
-        let current = start;
-        
-        const timer = setInterval(() => {
-          current += increment;
-          obj.textContent = current.toLocaleString();
-          if (current == end) {
-            clearInterval(timer);
-          }
-        }, stepTime);
-      }
-
-      // Smooth scroll for nav links
       document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
           e.preventDefault();
