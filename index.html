@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeathWish - Discord's Ultimate Utility & Raid Bot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a25;
+            --bg-card-hover: #222230;
+            --accent-red: #dc2626;
+            --accent-red-glow: rgba(220, 38, 38, 0.4);
+            --accent-purple: #7c3aed;
+            --accent-pink: #eb459e;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --gradient-1: linear-gradient(135deg, #dc2626 0%, #991b1b 50%, #7c3aed 100%);
+            --gradient-2: linear-gradient(135deg, #7c3aed 0%, #eb459e 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(220, 38, 38, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(235, 69, 158, 0.08) 0%, transparent 40%);
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.5;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: '☠️';
+            -webkit-text-fill-color: initial;
+            font-size: 1.2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            background: var(--gradient-1);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-red-glow);
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(220, 38, 38, 0.15);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            color: #fca5a5;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .hero-badge span {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 10px 30px var(--accent-red-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px var(--accent-red-glow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(220, 38, 38, 0.3);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            margin-top: 4rem;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        section {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.5), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(220, 38, 38, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        .bento-card.large {
+            grid-column: span 2;
+        }
+
+        .bento-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .bento-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .bento-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .bento-image {
+            width: 100%;
+            height: 200px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            font-size: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .feature-item:hover {
+            border-color: rgba(220, 38, 38, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(220, 38, 38, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .feature-item h4 {
+            font-weight: 600;
+        }
+
+        .feature-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .command-category {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .command-header {
+            background: var(--bg-secondary);
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .command-header h3 {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .command-list {
+            padding: 1rem;
+        }
+
+        .command-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .command-item:hover {
+            background: var(--bg-secondary);
+        }
+
+        .command-name {
+            font-family: 'Courier New', monospace;
+            background: rgba(220, 38, 38, 0.1);
+            color: #fca5a5;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .command-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .premium-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 4rem;
+            color: rgba(220, 38, 38, 0.2);
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .testimonial-text {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .author-info h4 {
+            font-weight: 600;
+        }
+
+        .author-info p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .cta-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 4rem 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(220, 38, 38, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-box h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .cta-box p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+        }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--accent-red);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .bento-card.large {
+                grid-column: span 1;
+            }
+
+            .stats {
+                gap: 2rem;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-card);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-red);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">DeathWish</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#commands">Commands</a></li>
+                <li><a href="#premium">Premium</a></li>
+            </ul>
+            <a href="#cta" class="nav-cta">Get Started</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-badge">
+            <span></span>
+            Now with Auto-Sharding & Rate Limit Protection
+        </div>
+        <h1>
+            Discord's <span class="gradient-text">Ultimate</span><br>Utility & Raid Bot
+        </h1>
+        <p class="hero-description">
+            DeathWish combines powerful moderation tools, engaging utilities, and advanced raid capabilities 
+            into one seamless Discord bot. Built for speed, reliability, and maximum impact.
+        </p>
+        <div class="hero-buttons">
+            <a href="#cta" class="btn btn-primary">
+                <span>☠️</span> Invite Bot
+            </a>
+            <a href="#features" class="btn btn-secondary">Explore Features</a>
+        </div>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" data-count="100">0</div>
+                <div class="stat-label">Commands</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="1000">0</div>
+                <div class="stat-label">Servers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="1000000">0</div>
+                <div class="stat-label">Users</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-count="99.9">0</div>
+                <div class="stat-label">Uptime %</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="section-header reveal">
+            <h2>Premium Moderation & Security</h2>
+            <p>Advanced tools to keep your community safe and under control</p>
+        </div>
+        <div class="bento-grid">
+            <div class="bento-card large reveal">
+                <div class="bento-icon">🛡️</div>
+                <h3>Anti-Raid Protection</h3>
+                <p>Built-in cooldowns, rate limiting, and permission checks prevent abuse. Every nuke command has built-in delays and safety measures to prevent accidental or malicious overuse.</p>
+                <div class="bento-image">🛡️ Anti-Nuke Dashboard</div>
+            </div>
+            <div class="bento-card reveal">
+                <div class="bento-icon">⚡</div>
+                <h3>Auto-Sharding</h3>
+                <p>Automatic shard management ensures the bot stays online and responsive even under heavy load across thousands of servers.</p>
+            </div>
+            <div class="bento-card reveal">
+                <div class="bento-icon">📊</div>
+                <h3>Stats Tracking</h3>
+                <p>Comprehensive command usage statistics with beautiful generated leaderboard images showing top users and command popularity.</p>
+            </div>
+            <div class="bento-card reveal">
+                <div class="bento-icon">🎨</div>
+                <h3>Custom Canvas</h3>
+                <p>Generate beautiful statistics images on-the-fly with our custom canvas renderer featuring Discord's color scheme.</p>
+            </div>
+            <div class="bento-card reveal">
+                <div class="bento-icon">⚙️</div>
+                <h3>Mass Actions</h3>
+                <p>Efficiently manage large servers with bulk operations for channels, roles, members, and permissions.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header reveal">
+            <h2>Utility Features</h2>
+            <p>Everything you need for server management and engagement</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-item reveal">
+                <div class="feature-header">
+                    <div class="feature-icon">🎉</div>
+                    <h4>Giveaways</h4>
+                </div>
+                <p>Create and manage giveaways with customizable duration, winners, and entry requirements.</p>
+            </div>
+            <div class="feature-item reveal">
+                <div class="feature-header">
+                    <div class="feature-icon">⭐</div>
+                    <h4>Starboard</h4>
+                </div>
+                <p>Highlight popular messages with automatic star tracking and customizable thresholds.</p>
+            </div>
+            <div class="feature-item reveal">
+                <div class="feature-header">
+                    <div class="feature-icon">📌</div>
+                    <h4>Sticky Messages</h4>
+                </div>
+                <p>Keep important messages pinned to the bottom of channels for maximum visibility.</p>
+            </div>
+            <div class="feature-item reveal">
+                <div class="feature-header">
+                    <div class="feature-icon">🌐</div>
+                    <h4>Translation</h4>
+                </div>
+                <p>Translate text between 100+ languages instantly using MyMemory API.</p>
+            </div>
+            <div class="feature-item reveal">
+                <div class="feature-header">
+                    <div class="feature-icon">🎮</div>
+                    <h4>Games</h4>
+                </div>
+                <p>Coinflip, dice, rock-paper-scissors, 8-ball, and trivia to keep your community engaged.</p>
+            </div>
+            <div class="feature-item reveal">
+                <div class="feature-header">
+                    <div class="feature-icon">⏰</div>
+                    <h4>Reminders</h4>
+                </div>
+                <p>Set personal reminders with customizable durations and notification settings.</p>
+            </div>
+            <div class="feature-item reveal">
+                <div class="feature-header">
+                    <div class="feature-icon">🗑️</div>
+                    <h4>Snipe</h4>
+                </div>
+                <p>Recover deleted messages and view edit history with the snipe and editsnipe commands.</p>
+            </div>
+            <div class="feature-item reveal">
+                <div class="feature-header">
+                    <div class="feature-icon">🚫</div>
+                    <h4>AFK System</h4>
+                </div>
+                <p>Automatic AFK status with mentions tracking and custom away messages.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="commands">
+        <div class="section-header reveal">
+            <h2>Command Categories</h2>
+            <p>Organized by function for easy navigation</p>
+        </div>
+        <div class="commands-grid">
+            <div class="command-category reveal">
+                <div class="command-header">
+                    <h3>🛠️ Utilities</h3>
+                </div>
+                <div class="command-list">
+                    <div class="command-item">
+                        <span class="command-name">/help</span>
+                        <span class="command-desc">View all commands</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/ping</span>
+                        <span class="command-desc">Check bot latency</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/userinfo</span>
+                        <span class="command-desc">User information</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/serverinfo</span>
+                        <span class="command-desc">Server statistics</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/avatar</span>
+                        <span class="command-desc">View user avatar</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/stats</span>
+                        <span class="command-desc">Command statistics</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/leaderboard</span>
+                        <span class="command-desc">Top users</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-category reveal">
+                <div class="command-header">
+                    <h3>🎉 Engagement</h3>
+                </div>
+                <div class="command-list">
+                    <div class="command-item">
+                        <span class="command-name">/giveaway</span>
+                        <span class="command-desc">Start/end giveaways</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/poll</span>
+                        <span class="command-desc">Create polls</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/game</span>
+                        <span class="command-desc">Coinflip, dice, rps</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/translate</span>
+                        <span class="command-desc">Translate text</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/remind</span>
+                        <span class="command-desc">Set reminders</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/afk</span>
+                        <span class="command-desc">Set AFK status</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-category reveal">
+                <div class="command-header">
+                    <h3>🔧 Moderation</h3>
+                </div>
+                <div class="command-list">
+                    <div class="command-item">
+                        <span class="command-name">/purge</span>
+                        <span class="command-desc">Delete messages</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/lock</span>
+                        <span class="command-desc">Lock channel</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/unlock</span>
+                        <span class="command-desc">Unlock channel</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/nick</span>
+                        <span class="command-desc">Change nickname</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/snipe</span>
+                        <span class="command-desc">Recover deleted</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/editsnipe</span>
+                        <span class="command-desc">View edit history</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="command-category reveal">
+                <div class="command-header">
+                    <h3>💀 Raid <span class="premium-badge">PREMIUM</span></h3>
+                </div>
+                <div class="command-list">
+                    <div class="command-item">
+                        <span class="command-name">/nuke</span>
+                        <span class="command-desc">Full server nuke</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/dac</span>
+                        <span class="command-desc">Delete all channels</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/ctc</span>
+                        <span class="command-desc">Create channels</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/rs</span>
+                        <span class="command-desc">Create roles</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/bana</span>
+                        <span class="command-desc">Ban all members</span>
+                    </div>
+                    <div class="command-item">
+                        <span class="command-name">/kall</span>
+                        <span class="command-desc">Kick all members</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="premium">
+        <div class="section-header reveal">
+            <h2>Premium Features</h2>
+            <p>Unlock the full power of DeathWish</p>
+        </div>
+        <div class="bento-grid">
+            <div class="bento-card reveal">
+                <div class="bento-icon">👑</div>
+                <h3>Premium Raid Commands</h3>
+                <p>Access to spem, nsfwspam, redditspam, r34spam, adminflood, striproles, stripeveryone, and forumflood commands.</p>
+            </div>
+            <div class="bento-card reveal">
+                <div class="bento-icon">⚡</div>
+                <h3>Higher Limits</h3>
+                <p>Create up to 250 roles, 200 channels, and perform mass actions on servers with unlimited member counts.</p>
+            </div>
+            <div class="bento-card reveal">
+                <div class="bento-icon">🎨</div>
+                <h3>Custom Branding</h3>
+                <p>Set custom server names, channel names, and spam messages for personalized raids.</p>
+            </div>
+            <div class="bento-card reveal">
+                <div class="bento-icon">🔥</div>
+                <h3>Priority Support</h3>
+                <p>Get priority access to new features and dedicated support for your server needs.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-header reveal">
+            <h2>Trusted by Server Owners</h2>
+            <p>See what our users have to say</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card reveal">
+                <p class="testimonial-text">"DeathWish has completely transformed how I manage my Discord servers. The utility commands are incredibly useful and the raid features are unmatched."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">JD</div>
+                    <div class="author-info">
+                        <h4>John Doe</h4>
+                        <p>Server Owner • 50k members</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <p class="testimonial-text">"The auto-sharding and rate limit protection means I never have to worry about the bot going down. It's been rock solid for months."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">AS</div>
+                    <div class="author-info">
+                        <h4>Alice Smith</h4>
+                        <p>Community Manager • 120k members</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <p class="testimonial-text">"Premium is absolutely worth it. The custom branding and higher limits make managing large servers so much easier. Highly recommend!"</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">MJ</div>
+                    <div class="author-info">
+                        <h4>Mike Johnson</h4>
+                        <p>Server Admin • 200k members</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="cta">
+        <div class="cta-box reveal">
+            <div class="cta-content">
+                <h2>Ready to Upgrade Your Server?</h2>
+                <p>Join thousands of servers using DeathWish for moderation, utilities, and more.</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary">
+                        <span>☠️</span> Add to Discord
+                    </a>
+                    <a href="#" class="btn btn-secondary">Join Support Server</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>DeathWish Bot &copy; 2025 • Not affiliated with Discord Inc.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="#">Terms</a> • 
+            <a href="#">Privacy</a> • 
+            <a href="#">Support</a>
+        </p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        function animateCounter(element, target, duration = 2000) {
+            const isDecimal = target % 1 !== 0;
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+
+            const updateCounter = () => {
+                current += increment;
+                if (current < target) {
+                    element.textContent = isDecimal ? current.toFixed(1) : Math.floor(current).toLocaleString();
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = isDecimal ? target.toFixed(1) : target.toLocaleString();
+                    if (target === 99.9) element.textContent += '%';
+                }
+            };
+
+            updateCounter();
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.stat-number');
+                    counters.forEach(counter => {
+                        const target = parseFloat(counter.dataset.count);
+                        animateCounter(counter, target);
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
